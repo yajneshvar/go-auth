@@ -43,13 +43,14 @@ func authenticate(response http.ResponseWriter, request *http.Request) {
 	signingKey := []byte(secret)
 	duration, _ := time.ParseDuration("24h")
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"exp": time.Now().Add(duration).Unix(),
+		"exp":  time.Now().Add(duration).Unix(),
+		"test": "yaj",
 	})
 	ss, err := token.SignedString(signingKey)
 
 	if err != nil {
 		log.Error("Failed to authenticate due to: ")
-		//response.WriteHeader(302)
+		response.WriteHeader(302)
 		log.Error(err)
 		return
 	}
@@ -64,7 +65,7 @@ func authenticate(response http.ResponseWriter, request *http.Request) {
 	if jsonErr != nil {
 		log.Error("Failed to authenticate2 due to: ")
 		log.Error(jsonErr)
-		//response.WriteHeader(302)
+		response.WriteHeader(302)
 		return
 	}
 
